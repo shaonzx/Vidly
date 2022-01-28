@@ -52,10 +52,6 @@ namespace Vidly.Controllers
             //return View();
         }
 
-        public ActionResult Edit(int id)
-        {
-            return Content("id=" + id);
-        }
 
         //Movies........ return list of movies
         public ActionResult Index()
@@ -88,6 +84,55 @@ namespace Vidly.Controllers
         public ActionResult ByReleaseDate(int year, int month)
         {
             return Content(year + "/" + month);
+        }
+
+        public ActionResult NewMovie()
+        {
+            var genres = _context.Genres.ToList();
+            var movieFormViewModel = new MovieFromViewModel
+            {
+                //Movie = new Movie(),
+                Genres = genres
+            };
+
+            return View("MovieForm", movieFormViewModel);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var movie = _context.Movies.ToList().Single(m => m.Id == id);
+            var genres = _context.Genres.ToList();
+            var movieFormViewModel = new MovieFromViewModel
+            {
+                Movie = movie,
+                Genres = genres
+            };
+
+            return View("MovieForm", movieFormViewModel);
+        }
+
+        public ActionResult Save(MovieFromViewModel vm)
+        {
+            if (vm.Movie.Id == 0)
+            {
+                if (vm.Movie.DateAdded == DateTime.MinValue)
+                {
+                    vm.Movie.DateAdded = DateTime.Now;
+                }
+                _context.Movies.Add(vm.Movie);
+            }
+            else
+            {
+                var movieInDb = _context.Movies.Single(m => m.Id == vm.Movie.Id);
+                movieInDb.Name = vm.Movie.Name;
+                movieInDb.ReleaseDate = vm.Movie.ReleaseDate;
+                movieInDb.GenreId = vm.Movie.GenreId;
+                movieInDb.NumberInStock = vm.Movie.NumberInStock;
+                //TryUpdateModel(movieInDb);
+            }
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Movies");
         }
     }
 }
