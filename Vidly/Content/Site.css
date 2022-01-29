@@ -22,3 +22,13 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* Following color block doesn't work, had to specify explicitly */
+.field-validation-error {
+    color: red !important
+}
+
+
+.input-validation-error {
+    border: 2px solid red
+}
