@@ -17,21 +17,86 @@
 }
 else
 {
-    <table class="table table-bordered table-hover">
+    <table id="movies" class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>Movie</th>
             <th>Genre</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var movie in Model)
+        @*following iteration isn't needed when getting data through ajax requests*@
+        @*@foreach (var movie in Model)
         {
             <tr>
                 <td>@Html.ActionLink(movie.Name, "Edit", "Movies", new {id = movie.Id}, null)</td>
                 <td>@movie.Genre.Name</td>
+                <td>
+                    <button data-movie-id="@movie.Id" class="btn-link js-delete">Delete</button>
+                </td>
             </tr>
-        }
+        }*@
         </tbody>
     </table>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+
+            //gets the entire dataset as markup (expensive for large data)
+            //var table = $("#movies").DataTable();
+
+            // following gets the dataset through api call
+            var table = $("#movies").dataTable({
+                ajax: {
+                    url: "/api/movies",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return "<a href='/movies/edit/" + customer.id + "'>" + customer.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "genre.name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-movie-id=" + data + ">Delete</button>";
+                        }
+                    }]
+
+            });
+
+            $("#movies").on("click", ".js-delete"
+                , function () {
+                    var button = $(this);
+                    bootbox.confirm("Are you sure you want to delete this movie?",
+                        function(result) {
+                            if (result) {
+                                $.ajax({
+                                    url: "/api/movies/" + button.attr("data-movie-id"),
+                                    method: "DELETE",
+                                    success: function () {
+
+                                        //removes only from table, not from internal list causing a bug (found in search after delete)
+                                        button.parents("tr").remove();
+
+                                        /*Following line from Mosh's tutorial isn't working (so the uncommenting the above and bug remains)*/
+                                        //table.row(button.parents("tr")).remove().draw();
+
+
+                                    }
+                                });
+                            }
+                        });
+                });
+        });
+    </script>
 }
