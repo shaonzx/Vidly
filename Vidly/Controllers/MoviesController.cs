@@ -58,6 +58,7 @@ namespace Vidly.Controllers
         {
             //var movies = GetMovies();
             var movies = _context.Movies.Include(g => g.Genre).ToList();
+            //var movies = _context.Movies.ToList();
 
             if (User.IsInRole(RoleName.CanManageMovies))
             {
