@@ -220,12 +220,15 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\CustomersController.cs" />
     <Compile Include="Controllers\Api\MoviesController.cs" />
+    <Compile Include="Controllers\Api\NewRentalsController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoviesController.cs" />
+    <Compile Include="Controllers\RentalsController.cs" />
     <Compile Include="Dtos\CustomerDto.cs" />
     <Compile Include="Dtos\MembershipTypeDto.cs" />
+    <Compile Include="Dtos\NewRentalDtos.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -290,6 +293,30 @@
     <Compile Include="Migrations\202202200225138_IdontknowwhathappenedErrorMessageIsAskingMeToDoSo.Designer.cs">
       <DependentUpon>202202200225138_IdontknowwhathappenedErrorMessageIsAskingMeToDoSo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202200753300_AddRental.cs" />
+    <Compile Include="Migrations\202202200753300_AddRental.Designer.cs">
+      <DependentUpon>202202200753300_AddRental.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202201034159_someChangesInRental.cs" />
+    <Compile Include="Migrations\202202201034159_someChangesInRental.Designer.cs">
+      <DependentUpon>202202201034159_someChangesInRental.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202201047084_AddNumberAvailableColumnToMovie.cs" />
+    <Compile Include="Migrations\202202201047084_AddNumberAvailableColumnToMovie.Designer.cs">
+      <DependentUpon>202202201047084_AddNumberAvailableColumnToMovie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202201052120_UpdateAvailableStockOfMovies.cs" />
+    <Compile Include="Migrations\202202201052120_UpdateAvailableStockOfMovies.Designer.cs">
+      <DependentUpon>202202201052120_UpdateAvailableStockOfMovies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202201055553_xxxxxxxxx.cs" />
+    <Compile Include="Migrations\202202201055553_xxxxxxxxx.Designer.cs">
+      <DependentUpon>202202201055553_xxxxxxxxx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202201102293_x.cs" />
+    <Compile Include="Migrations\202202201102293_x.Designer.cs">
+      <DependentUpon>202202201102293_x.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Customer.cs" />
@@ -299,6 +326,7 @@
     <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Models\Min18YearsIfAMember.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Rental.cs" />
     <Compile Include="Models\RoleName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -417,10 +445,13 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\typeahead.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bloodhound.js" />
+    <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -505,6 +536,10 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\typeahead.bundle.js" />
+    <Content Include="Scripts\typeahead.bundle.min.js" />
+    <Content Include="Scripts\typeahead.jquery.js" />
+    <Content Include="Scripts\typeahead.jquery.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -548,6 +583,7 @@
     <Content Include="Views\Customers\CustomerForm.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
     <Content Include="Views\Movies\ReadOnlyList.cshtml" />
+    <Content Include="Views\Rentals\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -613,6 +649,24 @@
     <EmbeddedResource Include="Migrations\202202200225138_IdontknowwhathappenedErrorMessageIsAskingMeToDoSo.resx">
       <DependentUpon>202202200225138_IdontknowwhathappenedErrorMessageIsAskingMeToDoSo.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202200753300_AddRental.resx">
+      <DependentUpon>202202200753300_AddRental.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202201034159_someChangesInRental.resx">
+      <DependentUpon>202202201034159_someChangesInRental.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202201047084_AddNumberAvailableColumnToMovie.resx">
+      <DependentUpon>202202201047084_AddNumberAvailableColumnToMovie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202201052120_UpdateAvailableStockOfMovies.resx">
+      <DependentUpon>202202201052120_UpdateAvailableStockOfMovies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202201055553_xxxxxxxxx.resx">
+      <DependentUpon>202202201055553_xxxxxxxxx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202201102293_x.resx">
+      <DependentUpon>202202201102293_x.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
@@ -633,9 +687,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>8933</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44336/</IISUrl>
+          <IISUrl>http://localhost:50966/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
